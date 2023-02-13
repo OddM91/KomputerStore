@@ -1,18 +1,18 @@
 let workPayment = 0;
 let bank = 0;
 let loan = 0;
-let allComputers = null;
+let allComputers = [];
 
-let btnWorkAction = document.getElementById("btnWorkAction")
-let btnBankAction = document.getElementById("btnBankAction")
-let txtWorkPayArea = document.getElementById("txtWorkPay")
-let computerDisplayArea = document.getElementById("computorDisplay")
-let computerDropDown = document.getElementById("computerDropDown")
-let repayLoanArea = document.getElementById("RepayLoanArea")
-let btnBuyComputerAction = document.getElementById("btnBuyComputerAction")
-let btnBankLoanAction = document.getElementById("btnBankLoanAction")
-let txtBankLoanArea = document.getElementById("txtBankBalance")
-let computerSelectedArea = document.getElementById("computerSelectedArea")
+const btnWorkAction = document.getElementById("btnWorkAction")
+const btnBankAction = document.getElementById("btnBankAction")
+const txtWorkPayArea = document.getElementById("txtWorkPay")
+const computerDisplayArea = document.getElementById("computorDisplay")
+const computerDropDown = document.getElementById("computerDropDown")
+const repayLoanArea = document.getElementById("RepayLoanArea")
+const btnBuyComputerAction = document.getElementById("btnBuyComputerAction")
+const btnBankLoanAction = document.getElementById("btnBankLoanAction")
+const txtBankLoanArea = document.getElementById("txtBankBalance")
+const computerSelectedArea = document.getElementById("computerSelectedArea")
 
 btnWorkAction.addEventListener("click", handleWorkAction)
 btnBankAction.addEventListener("click", handleBankAction)
@@ -36,6 +36,7 @@ function handleBankAction(){
         if(payback > loan){
             bank += workPayment-loan
             loan = 0
+            repayLoanArea.innerHTML = ""
         }
         else{
             loan -= payback;
@@ -81,6 +82,7 @@ function handleLoanAction(){
     let repayLoanButton = document.createElement("button")
     repayLoanButton.innerText = "Repay Loan"
     repayLoanButton.addEventListener("click", handleRepayLoan)
+    repayLoanButton.id = "repayLoanButton"
     repayLoanArea.append(repayLoanButton)
     updateBalance()
 }
@@ -110,6 +112,7 @@ function displayComputers(index){
     computerFeatureTitle.innerText = "Features: "
     computerFeatures.append(computerFeatureTitle)
     let computerFeatureList = document.createElement("ul")
+    computerFeatureList.id = "featureList"
     computerFeatures.append(computerFeatureList)
     for(feature of currentPC.specs){
         let featureItem = document.createElement("li")
@@ -120,10 +123,17 @@ function displayComputers(index){
     computerSelectedArea.append(computerFeatures)
     let computerImage = document.createElement("img")
     computerImage.src = `https://hickory-quilled-actress.glitch.me/${currentPC.image}`
+    computerImage.width = 300
     computerDisplayArea.append(computerImage)
+    let computerTitle = document.createElement("h2")
+    computerTitle.innerText = `${currentPC.title}`
+    computerDisplayArea.append(computerTitle)
     let computerText = document.createElement("p")
-    computerText.innerText = `Title: ${currentPC.title}, \nDescription: ${currentPC.description}, \nPrice: ${currentPC.price} NOK, \nStock: ${currentPC.stock}, \nActive: ${currentPC.active}`
+    computerText.innerText = `${currentPC.description}`
     computerDisplayArea.append(computerText)
+    let computerPrice = document.createElement("h3")
+    computerPrice.innerText = `${currentPC.price} NOK`
+    computerDisplayArea.append(computerPrice)
 }
 
 function makeComputerDropDown(){

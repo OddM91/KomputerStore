@@ -1,0 +1,77 @@
+html, body {
+    background-color: #fff;
+    color: #000;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+h1{
+    margin: 0;
+}
+
+#main {
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+button{
+    border-radius: 5px;
+    height: 30px;
+}
+#btnBankLoanAction{
+    background-color:rgb(39, 251, 141);
+    width: 80%;
+    margin: 15px
+}
+#btnWorkAction{
+    background-color:rgb(39, 124, 251);
+    width: 40%;
+    margin-left: 8px;
+    color:white;
+}
+#btnBankAction{
+    background-color:rgb(203, 212, 33);
+    width: 40%;
+    margin-left: 8px;   
+}
+#btnBuyComputerAction{
+    background-color:rgb(148, 211, 240);
+    width: 40%;
+}
+#repayLoanButton{
+    background-color: red;
+    color: #fff;
+    margin-left: 8px;
+    width: 40%;
+}
+
+
+#header {
+    display: flex;
+    width: 100%;
+    background-color: black;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    height: 70px;
+}
+
+#bank,#work,#selectPC{
+    flex-basis:26%;
+    background-color: #fbfbfb   ;
+    margin: 10px;
+    border-radius: 25px;
+}
+
+#displayPC{
+    background-color: #ebebeb   ;
+    margin: 10px;
+    border-radius: 25px;
+    border-color: #000;
+    border-width: 10px;
+}
+
+#featureList{
+    font-size: 14px;
+}

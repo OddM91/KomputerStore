@@ -5,28 +5,31 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
+    <header id="header">
         <h1>Komputer Store</h1>
     </header>
-    <main>
-        <section>
+    <main id="main">
+        <section id="bank">
             <h2>Joe Banker</h2>
             <p id="txtBankBalance">Balance: kr 0,00</p>
             <button id="btnBankLoanAction">Get a loan</button>
         </section>
-        <section>
+        <section id="work">
             <h2>Work</h2>
             <p id="txtWorkPay">Pay: kr 0,00</p>
             <button id="btnWorkAction">Work</button>
             <button id="btnBankAction">Bank</button>
             <div id="RepayLoanArea"></div>
         </section>
-        <section>
-            <h2>PC stuff</h2>
+        <section id="selectPC">
+            <h2>Laptops</h2>
             <select name="computerDropDown" id="computerDropDown"></select>
             <div id="computerSelectedArea"></div>
+        </section>
+        <section id="displayPC">
             <div id="computorDisplay"></div>
             <button id="btnBuyComputerAction">BUY NOW</button>
         </section>
