@@ -1,4 +1,3 @@
-console.log("Hello World!")
 let workPayment = 0;
 let bank = 0;
 let loan = 0;
@@ -28,7 +27,6 @@ function handleWorkAction(){
     console.log("Zug zug")
     workPayment += 100
     updatePay()
-    console.log(allComputers)
 }
 
 function handleBankAction(){
@@ -93,8 +91,6 @@ function loadComputer(){
         return response.json();
     })
     .then(function (data) {
-        console.log(data);
-        console.log("Here is the title of the first one: " + data[0].title)
         allComputers = data;
     }).then(function () {
         makeComputerDropDown()
@@ -106,16 +102,27 @@ function loadComputer(){
 }
 
 function displayComputers(index){
+    currentPC = allComputers[index]
     computerSelectedArea.innerHTML = ""
     computerDisplayArea.innerHTML = ""
-    let computerFeatures = document.createElement("p")
-    computerFeatures.innerText = `Features: ${allComputers[index].specs}`
+    let computerFeatures = document.createElement("div")
+    let computerFeatureTitle = document.createElement("h3")
+    computerFeatureTitle.innerText = "Features: "
+    computerFeatures.append(computerFeatureTitle)
+    let computerFeatureList = document.createElement("ul")
+    computerFeatures.append(computerFeatureList)
+    for(feature of currentPC.specs){
+        let featureItem = document.createElement("li")
+        featureItem.innerText += `${feature}`
+        computerFeatureList.append(featureItem)
+    }
+    
     computerSelectedArea.append(computerFeatures)
     let computerImage = document.createElement("img")
-    computerImage.src = `https://hickory-quilled-actress.glitch.me/${allComputers[index].image}`
+    computerImage.src = `https://hickory-quilled-actress.glitch.me/${currentPC.image}`
     computerDisplayArea.append(computerImage)
     let computerText = document.createElement("p")
-    computerText.innerText = `Title: ${allComputers[index].title}, \nDescription: ${allComputers[index].description}, \nPrice: ${allComputers[index].price}, \nStock: ${allComputers[index].stock}, \nActive: ${allComputers[index].active}`
+    computerText.innerText = `Title: ${currentPC.title}, \nDescription: ${currentPC.description}, \nPrice: ${currentPC.price} NOK, \nStock: ${currentPC.stock}, \nActive: ${currentPC.active}`
     computerDisplayArea.append(computerText)
 }
 

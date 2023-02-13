@@ -7,25 +7,31 @@
     <title>Document</title>
 </head>
 <body>
-    <div>
-        <h1>Work</h1>
-        <p id="txtWorkPay">Pay: kr 0,00</p>
-        <button id="btnWorkAction">Work</button>
-        <button id="btnBankAction">Bank</button>
-        <div id="RepayLoanArea"></div>
-    </div>
-    <div>
-        <h1>Joe Banker</h1>
-        <p id="txtBankBalance">Balance: kr 0,00</p>
-        <button id="btnBankLoanAction">Get a loan</button>
-    </div>
-    <div>
-        <h1>PC stuff</h1>
-        <select name="computerDropDown" id="computerDropDown"></select>
-        <div id="computerSelectedArea"></div>
-        <div id="computorDisplay"></div>
-        <button id="btnBuyComputerAction">Buy Computer</button>
-    </div>
+    <header>
+        <h1>Komputer Store</h1>
+    </header>
+    <main>
+        <section>
+            <h2>Joe Banker</h2>
+            <p id="txtBankBalance">Balance: kr 0,00</p>
+            <button id="btnBankLoanAction">Get a loan</button>
+        </section>
+        <section>
+            <h2>Work</h2>
+            <p id="txtWorkPay">Pay: kr 0,00</p>
+            <button id="btnWorkAction">Work</button>
+            <button id="btnBankAction">Bank</button>
+            <div id="RepayLoanArea"></div>
+        </section>
+        <section>
+            <h2>PC stuff</h2>
+            <select name="computerDropDown" id="computerDropDown"></select>
+            <div id="computerSelectedArea"></div>
+            <div id="computorDisplay"></div>
+            <button id="btnBuyComputerAction">BUY NOW</button>
+        </section>
+    </main>
     <script src="app.js" type="text/javascript"></script>
+    <script src="moduleBank.js" type="module"></script>
 </body>
 </html>
