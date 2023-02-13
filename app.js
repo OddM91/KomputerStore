@@ -2,23 +2,25 @@ console.log("Hello World!")
 let workPayment = 0;
 let bank = 0;
 let loan = 0;
-let globalItem = null;
+let allComputers = null;
 
 let btnWorkAction = document.getElementById("btnWorkAction")
 let btnBankAction = document.getElementById("btnBankAction")
 let txtWorkPayArea = document.getElementById("txtWorkPay")
 let computerDisplayArea = document.getElementById("computorDisplay")
 let computerDropDown = document.getElementById("computerDropDown")
-
+let repayLoanArea = document.getElementById("RepayLoanArea")
+let btnBuyComputerAction = document.getElementById("btnBuyComputerAction")
 let btnBankLoanAction = document.getElementById("btnBankLoanAction")
 let txtBankLoanArea = document.getElementById("txtBankBalance")
+let computerSelectedArea = document.getElementById("computerSelectedArea")
 
 btnWorkAction.addEventListener("click", handleWorkAction)
 btnBankAction.addEventListener("click", handleBankAction)
 btnBankLoanAction.addEventListener("click", handleLoanAction)
-computerDropDown.addEventListener("change", function(){
-    displayComputers(computerDropDown.value-1);
-})
+btnBuyComputerAction.addEventListener("click", handleBuyComputerAction)
+
+computerDropDown.addEventListener("change", () => displayComputers(computerDropDown.value-1))
 
 loadComputer()
 
@@ -26,7 +28,7 @@ function handleWorkAction(){
     console.log("Zug zug")
     workPayment += 100
     updatePay()
-    console.log(globalItem)
+    console.log(allComputers)
 }
 
 function handleBankAction(){
@@ -67,24 +69,33 @@ function handleLoanAction(){
         return
     }
     loan = prompt("How much would you like to loan?")
+    if(isNaN(loan) || !loan){
+        alert("Loan is obviously a number...")
+        loan = 0;
+        return
+    }
     if(loan > bank*2){
         alert("You can not loan more than double of your balance!")
         loan = 0
         return
     }
     bank += parseInt(loan)
+    let repayLoanButton = document.createElement("button")
+    repayLoanButton.innerText = "Repay Loan"
+    repayLoanButton.addEventListener("click", handleRepayLoan)
+    repayLoanArea.append(repayLoanButton)
     updateBalance()
 }
 
 function loadComputer(){
-    fetch(" https://hickory-quilled-actress.glitch.me/computers")
+    fetch("https://hickory-quilled-actress.glitch.me/computers")
     .then(function (response){
         return response.json();
     })
     .then(function (data) {
         console.log(data);
         console.log("Here is the title of the first one: " + data[0].title)
-        globalItem = data;
+        allComputers = data;
     }).then(function () {
         makeComputerDropDown()
         displayComputers(0)
@@ -92,17 +103,56 @@ function loadComputer(){
     .catch(function (error){
         console.error("Something went wrong", error);
     })
-    
 }
 
 function displayComputers(index){
-    computerDisplayArea.innerText = `Title: ${globalItem[index].title}, \nDescription: ${globalItem[index].description}, \nSpecs: ${globalItem[index].specs}, \nPrice: ${globalItem[index].price}, \nStock: ${globalItem[index].stock}, \nActive: ${globalItem[index].active}, \nImage: ${globalItem[index].image}`
+    computerSelectedArea.innerHTML = ""
+    computerDisplayArea.innerHTML = ""
+    let computerFeatures = document.createElement("p")
+    computerFeatures.innerText = `Features: ${allComputers[index].specs}`
+    computerSelectedArea.append(computerFeatures)
+    let computerImage = document.createElement("img")
+    computerImage.src = `https://hickory-quilled-actress.glitch.me/${allComputers[index].image}`
+    computerDisplayArea.append(computerImage)
+    let computerText = document.createElement("p")
+    computerText.innerText = `Title: ${allComputers[index].title}, \nDescription: ${allComputers[index].description}, \nPrice: ${allComputers[index].price}, \nStock: ${allComputers[index].stock}, \nActive: ${allComputers[index].active}`
+    computerDisplayArea.append(computerText)
 }
 
 function makeComputerDropDown(){
-    let result = ``;
-    globalItem.forEach(element => {
-        result += `<option value="${element.id}">${element.title}</option>`
+    allComputers.forEach(element => {
+        let optionElement = document.createElement("option")
+        optionElement.value = element.id
+        optionElement.innerText = element.title
+        computerDropDown.append(optionElement)
     });
-    computerDropDown.innerHTML = result;
+}
+
+function handleRepayLoan(){
+    if(workPayment > loan){
+        bank += workPayment - loan
+        loan = 0;
+    }
+    else{
+        loan -= workPayment
+    }
+    workPayment = 0;
+    if(loan == 0){
+        repayLoanArea.innerHTML = ""
+    }
+    updateBalance()
+    updatePay()
+}
+
+function handleBuyComputerAction(){
+    let computerIndex = computerDropDown.value-1
+    let priceOfCurrentPC = allComputers[computerIndex].price
+    if(priceOfCurrentPC > bank){
+        alert("You can not affort this PC. Work harder!")
+        return
+    }
+    
+    bank -= priceOfCurrentPC
+    updateBalance()
+    alert(`Thank you for your patronage. Hope you and your ${allComputers[computerIndex].title} will live happily ever after!`)
 }
