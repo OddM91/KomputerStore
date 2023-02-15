@@ -3,6 +3,7 @@ let bank = 0;
 let loan = 0;
 let allComputers = [];
 
+// Loading in txt area and button elements. 
 const btnWorkAction = document.getElementById("btnWorkAction");
 const btnBankAction = document.getElementById("btnBankAction");
 const txtWorkPayArea = document.getElementById("txtWorkPay");
@@ -14,23 +15,33 @@ const btnBankLoanAction = document.getElementById("btnBankLoanAction");
 const txtBankLoanArea = document.getElementById("txtBankBalance");
 const computerSelectedArea = document.getElementById("computerSelectedArea");
 
+// Assigning the functions to the different buttons and dropdowns. 
 btnWorkAction.addEventListener("click", handleWorkAction);
 btnBankAction.addEventListener("click", handleBankAction);
 btnBankLoanAction.addEventListener("click", handleLoanAction);
 btnBuyComputerAction.addEventListener("click", handleBuyComputerAction);
-
 computerDropDown.addEventListener("change", () =>
   displayComputers(computerDropDown.value - 1)
 );
 
+/** 
+ *  Initial fetch of data to display. 
+ */
 loadComputer();
 
+/**
+ * Function for the "Work"-Button. It simply works. 
+ */
 function handleWorkAction() {
   console.log("Zug zug");
   workPayment += 100;
   updatePay();
 }
 
+/**
+ * Fucntion for the "Bank"-Button. 
+ * It transfers money to the bank, and if you have a loan it uses 10% of the money to pay back the loan. 
+ */
 function handleBankAction() {
   console.log("IM RICH!");
   if (loan > 0) {
@@ -51,6 +62,9 @@ function handleBankAction() {
   updateBalance();
 }
 
+/**
+ * Updates the Pay area. This one is called whenever there is a change in the "Work" area. 
+ */
 function updatePay() {
   txtWorkPayArea.innerText = `Pay: ${new Intl.NumberFormat("no-NO", {
     style: "currency",
@@ -58,6 +72,10 @@ function updatePay() {
   }).format(workPayment)}`;
 }
 
+/**
+ * Updates the Banker area. Call it whenever there is a change in the bank. 
+ * It also checks if there is a loan and adds text to see how much is left. 
+ */
 function updateBalance() {
   txtBankLoanArea.innerText = `Balance: ${new Intl.NumberFormat("no-NO", {
     style: "currency",
@@ -71,6 +89,10 @@ function updateBalance() {
   }
 }
 
+/**
+ * Used when a loan is taken. It will first check if you are allowed to take a loan. 
+ * Loan conditions are: Only 1 loan at the time. And you can only loan double of what you have in the bank. 
+ */
 function handleLoanAction() {
   console.log("Yikes...");
   if (loan > 0) {
@@ -97,6 +119,9 @@ function handleLoanAction() {
   updateBalance();
 }
 
+/**
+ * The GET call to fetch all the data about the laptops and display the first one in the array. 
+ */
 function loadComputer() {
   fetch("https://hickory-quilled-actress.glitch.me/computers")
     .then(function (response) {
@@ -114,10 +139,19 @@ function loadComputer() {
     });
 }
 
+/**
+ * This one display the laptops. First it makes the Select section where the Features go, then the full display with image. 
+ * It will wipe out the last one displayed, and create new elements for itself to go into. 
+ * I could obviously have made all these in the HTML, and just edited the inside of the elements instead of making new
+ * ones every time, but this is what I went with this time, and I hope I will not lose marks for it. 
+ * @param {int} index Specifies the ID of the laptop displayed. 
+ */
 function displayComputers(index) {
   currentPC = allComputers[index];
   computerSelectedArea.innerHTML = "";
   computerDisplayArea.innerHTML = "";
+
+  // Feature list next to the dropdown
   let computerFeatures = document.createElement("div");
   let computerFeatureTitle = document.createElement("h3");
   computerFeatureTitle.innerText = "Features: ";
@@ -130,8 +164,9 @@ function displayComputers(index) {
     featureItem.innerText += `${feature}`;
     computerFeatureList.append(featureItem);
   }
-
   computerSelectedArea.append(computerFeatures);
+
+  // Details with image. 
   let computerImage = document.createElement("img");
   computerImage.src = `https://hickory-quilled-actress.glitch.me/${currentPC.image}`;
   computerImage.width = 300;
@@ -147,6 +182,10 @@ function displayComputers(index) {
   computerDisplayArea.append(computerPrice);
 }
 
+/**
+ * This one makes the dropdown menu of all laptops. 
+ * It is called right after the API has been called. 
+ */
 function makeComputerDropDown() {
   allComputers.forEach((element) => {
     let optionElement = document.createElement("option");
@@ -156,6 +195,10 @@ function makeComputerDropDown() {
   });
 }
 
+/**
+ * Handles the "Repay Loan"-button. 
+ * Checks if there is left over money that will be added to the bank, and if the loan is paid back remove the button. 
+ */
 function handleRepayLoan() {
   if (workPayment > loan) {
     bank += workPayment - loan;
@@ -170,7 +213,11 @@ function handleRepayLoan() {
   updateBalance();
   updatePay();
 }
-
+/**
+ * The "BUY NOW"-button. 
+ * Checks if you have the funds to buy the current selected laptop and reduces you bank balance if you buy it.
+ * And if yuo don't have the funds tells you that you can't buy it. 
+ */
 function handleBuyComputerAction() {
   let computerIndex = computerDropDown.value - 1;
   let priceOfCurrentPC = allComputers[computerIndex].price;
